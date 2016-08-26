@@ -4,15 +4,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
 	<meta charset="utf-8" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="css/angu-drag-drop-table" rel="stylesheet" />
+    <link href="css/angu-drag-drop-table.css" rel="stylesheet" />
     <script src="js/angu-drag-drop-table.js"></script>
+    <script src="js/demo.js"></script>
 </head>
 <body>
     <div ng-app="app" ng-controller="DemoCtrl">
         <h3>Demo</h3> <br />
-        
+        <angu-drag-drop-table ng-model="src.localData" 
+                              columns="src.columns" 
+                              table-class="table table-bordered">
+        </angu-drag-drop-table>
     </div>
 </body>
 </html>

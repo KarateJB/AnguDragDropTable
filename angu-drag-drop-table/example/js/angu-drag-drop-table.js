@@ -1,8 +1,8 @@
 angular.module('anguDragDropTable', [])
-    .directive('AnguDragDropTable', function () {
+    .directive('anguDragDropTable', function () {
 
-        var template=`
-        <table class="tableClass">
+        var template = `
+        <table ng-class="tableClass">
         <thead>
         <tr>
         <td ng-repeat="col in columns">{{col.title}}<td>
@@ -17,17 +17,17 @@ angular.module('anguDragDropTable', [])
         `;
 
         return {
-            restrict: "A",
+            // restrict: "A",
             scope: {
-                localData:'=ngModel',  //Row data
+                localData: '=ngModel',  //Row data
                 columns: '=',          //Columns
-                tableClass:'@'         //The Css class of table
+                tableClass: '@'         //The Css class of table
             },
             template: template,
             link: function ($scope, $element, $attr) {
-
+                console.log($scope.tableClass);
             },
-            controller: function ($scope, $element, $attr) {
+            controller: function ($scope, $element) {
 
             }
 
