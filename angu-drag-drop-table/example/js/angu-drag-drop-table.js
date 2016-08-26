@@ -130,7 +130,7 @@ angular.module('anguDragDropTable', [])
                     angular.forEach($scope.src.columns.data, function (col) {
 
                         if (!isStopDg) {
-                            if (col.title === $scope.src.columns.dragColumn.title) {
+                            if (col.id === $scope.src.columns.dragColumn.id) {
                                 $timeout(function () {
                                     col.order = dropColOrder;
                                     
@@ -140,7 +140,7 @@ angular.module('anguDragDropTable', [])
                             }
                         }
                         if (!isStopDp) {
-                            if (col.title === $scope.src.columns.dropColumn.title) {
+                            if (col.id === $scope.src.columns.dropColumn.id) {
                                 $timeout(function () {
                                     col.order = dragColOrder;
                                 }, 100)
@@ -157,7 +157,7 @@ angular.module('anguDragDropTable', [])
                                 var isStopSearchCol = false;
                                 angular.forEach($scope.src.columns.data, function (col) {
                                     if (!isStopSearchCol) {
-                                        if(rowdata.column===col.title){
+                                        if(rowdata.column===col.id){
                                             $timeout(function(){
                                                 rowdata.order = col.order;
                                             }, 100);
