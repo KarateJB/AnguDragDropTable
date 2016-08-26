@@ -9,8 +9,8 @@ angular.module('app', ['anguDragDropTable'])
             {'id':'colName','order':2,'title':'Name'},
             {'id':'colAge', 'order':3,'title':'Age'}]};
         $scope.src.rows=[
-            {'Data':[{'column':'SN','value':1},{'column':'Name','value':'JB'},{'column':'Age','value':35}]},
-            {'Data':[{'column':'SN','value':2},{'column':'Name','value':'Lily'},{'column':'Age','value':18}]},
-            {'Data':[{'column':'SN','value':3},{'column':'Name','value':'Leia'},{'column':'Age','value':3}]},
+            {'data':[{'column':'SN','value':1},{'column':'Name','value':'JB'},{'column':'Age','value':35}]},
+            {'data':[{'column':'SN','value':2},{'column':'Name','value':'Lily'},{'column':'Age','value':18}]},
+            {'data':[{'column':'SN','value':3},{'column':'Name','value':'Leia'},{'column':'Age','value':3}]},
             ];
     })

@@ -83,8 +83,8 @@ angular.module('anguDragDropTable', [])
     .directive('anguDragDropTable', function ($document, $timeout) {
 
         var template = `
-        <input type ="text" ng-model="columns.dragColumn" value="{{columns.dragColumn.id}}" />
-        <input type ="text" ng-model="columns.dropColumn" value="{{columns.dropColumn.id}}" />
+        <input type ="hidden" ng-model="columns.dragColumn" value="{{columns.dragColumn.id}}" />
+        <input type ="hidden" ng-model="columns.dropColumn" value="{{columns.dropColumn.id}}" />
         <table ng-class="tableClass">
         <thead>
         <tr>
@@ -103,7 +103,9 @@ angular.module('anguDragDropTable', [])
         </thead>
         <tbody>
         <tr ng-repeat="row in src.rows">
-           <td ng-repeat="data in row.Data">{{data.value}}</td>
+           <td ng-repeat="data in row.data | orderBy:'order'">
+              {{data.value}}
+           </td>
         </tr>
         </tbody>
         </table>
@@ -126,6 +128,7 @@ angular.module('anguDragDropTable', [])
                     if (!newValue || newValue == null)
                         return;
 
+                    //Set the new order of columns
                     var dragColOrder = $scope.src.columns.dragColumn.order;
                     var dropColOrder = $scope.src.columns.dropColumn.order;
 
@@ -137,8 +140,8 @@ angular.module('anguDragDropTable', [])
                             if (col.title === $scope.src.columns.dragColumn.title) {
                                 $timeout(function () {
                                     col.order = dropColOrder;
-                                    $scope.src.columns.dragColumn = {};
-                                }, 300)
+                                    
+                                }, 100)
                                 console.log(col.title + "'s order changes to " + col.order);
                                 isStopDg = true;
                             }
@@ -147,29 +150,47 @@ angular.module('anguDragDropTable', [])
                             if (col.title === $scope.src.columns.dropColumn.title) {
                                 $timeout(function () {
                                     col.order = dragColOrder;
-                                    $scope.src.columns.dropColumn = {};
-                                }, 300)
+                                }, 100)
                                 console.log(col.title + "'s order changes to " + col.order);
                                 isStopDp = true;
                             }
                         }
                     })
 
+                    //Set the new order of row value
+                    angular.forEach($scope.src.rows, function (row) {
+                        angular.forEach(row.data, function (rowdata) {
+                            if (rowdata.column) {
+                                var isStopSearchCol = false;
+                                angular.forEach($scope.src.columns.data, function (col) {
+                                    if (!isStopSearchCol) {
+                                        if(rowdata.column===col.title){
+                                            $timeout(function(){
+                                                rowdata.order = col.order;
+                                            }, 100);
+                                            isStopSearchCol = false;
+                                        }
+                                    }
+                                })
+                            }
+                            else{
+                                rowdata.order =0;
+                            }
+                        })
+                    })
+
+                    $scope.src.columns.dragColumn = {};
+                    $scope.src.columns.dropColumn = {};
+
                 })
 
                 // $scope.initColumns = function () {
-
                 //     angular.forEach($scope.columns, function (col) {
-
                 //         var queryRslt = $document[0].getElementById(id)
                 //         var elem = angular.element(queryRslt);
-
                 //     })
-
-
                 // }
 
-                // $scope.initColumns();
             },
             controller: function ($scope, $element) {
 
