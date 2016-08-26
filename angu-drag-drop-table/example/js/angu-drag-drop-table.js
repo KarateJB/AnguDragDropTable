@@ -9,13 +9,18 @@ angular.module('anguDragDropTable', [])
             link: function ($scope, $element, $attr) {
 
                 $element.bind('dragstart', function (event) {
+
+                    console.log("Drag start!");
+
+
                     var dragColId = event.target.id;
                     var isStop = false;
                     angular.forEach($scope.columns.data, function (col) {
                         if (!isStop) {
                             if (dragColId === col.id) {
-                                $scope.columns.dragColumn = col;
+                                $scope.columns.dragColumn = JSON.parse(JSON.stringify(col));
                                 $scope.$apply();
+                                console.log($scope.columns.dragColumn);
                                 isStop = true;
                             }
                         }
@@ -43,15 +48,16 @@ angular.module('anguDragDropTable', [])
 
                 $element.bind('drop', function (event) {
 
-
+                    console.log("Drop!");
                     var dropColId = event.target.id;
 
                     var isStop = false;
                     angular.forEach($scope.columns.data, function (col) {
                         if (!isStop) {
                             if (dropColId === col.id) {
-                                $scope.columns.dropColumn = col;
+                                $scope.columns.dropColumn = JSON.parse(JSON.stringify(col));
                                 $scope.$apply();
+                                console.log($scope.columns.dropColumn);
                                 isStop = true;
                             }
                         }
@@ -74,7 +80,7 @@ angular.module('anguDragDropTable', [])
 
         }
     })
-    .directive('anguDragDropTable', function ($document) {
+    .directive('anguDragDropTable', function ($document, $timeout) {
 
         var template = `
         <input type ="text" ng-model="columns.dragColumn" value="{{columns.dragColumn.id}}" />
@@ -101,13 +107,12 @@ angular.module('anguDragDropTable', [])
         </tr>
         </tbody>
         </table>
-        <input type="button" value="Show" ng-click="Show()" />
         `;
 
         return {
             // restrict: "A",
             scope: {
-                src: '=ngModel',  //Row data
+                src: '=ngModel',        //The source includes columns and rows
                 tableClass: '@'         //The Css class of table
             },
             template: template,
@@ -115,11 +120,42 @@ angular.module('anguDragDropTable', [])
 
                 $scope.dragColumn = null;
                 $scope.dropColumn = null;
-                $scope.Show = function () {
-                    console.log($scope.src.columns.dragColumn);
-                    console.log($scope.src.columns.dropColumn);
 
-                }
+                $scope.$watch('src.columns.dropColumn.id', function (newValue, oldValue) {
+
+                    if (!newValue || newValue == null)
+                        return;
+
+                    var dragColOrder = $scope.src.columns.dragColumn.order;
+                    var dropColOrder = $scope.src.columns.dropColumn.order;
+
+                    var isStopDg = false;
+                    var isStopDp = false;
+                    angular.forEach($scope.src.columns.data, function (col) {
+
+                        if (!isStopDg) {
+                            if (col.title === $scope.src.columns.dragColumn.title) {
+                                $timeout(function () {
+                                    col.order = dropColOrder;
+                                    $scope.src.columns.dragColumn = {};
+                                }, 300)
+                                console.log(col.title + "'s order changes to " + col.order);
+                                isStopDg = true;
+                            }
+                        }
+                        if (!isStopDp) {
+                            if (col.title === $scope.src.columns.dropColumn.title) {
+                                $timeout(function () {
+                                    col.order = dragColOrder;
+                                    $scope.src.columns.dropColumn = {};
+                                }, 300)
+                                console.log(col.title + "'s order changes to " + col.order);
+                                isStopDp = true;
+                            }
+                        }
+                    })
+
+                })
 
                 // $scope.initColumns = function () {
 
