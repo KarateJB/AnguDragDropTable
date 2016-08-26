@@ -10,9 +10,6 @@ angular.module('anguDragDropTable', [])
 
                 $element.bind('dragstart', function (event) {
 
-                    console.log("Drag start!");
-
-
                     var dragColId = event.target.id;
                     var isStop = false;
                     angular.forEach($scope.columns.data, function (col) {
@@ -20,7 +17,6 @@ angular.module('anguDragDropTable', [])
                             if (dragColId === col.id) {
                                 $scope.columns.dragColumn = JSON.parse(JSON.stringify(col));
                                 $scope.$apply();
-                                console.log($scope.columns.dragColumn);
                                 isStop = true;
                             }
                         }
@@ -48,7 +44,6 @@ angular.module('anguDragDropTable', [])
 
                 $element.bind('drop', function (event) {
 
-                    console.log("Drop!");
                     var dropColId = event.target.id;
 
                     var isStop = false;
@@ -57,7 +52,6 @@ angular.module('anguDragDropTable', [])
                             if (dropColId === col.id) {
                                 $scope.columns.dropColumn = JSON.parse(JSON.stringify(col));
                                 $scope.$apply();
-                                console.log($scope.columns.dropColumn);
                                 isStop = true;
                             }
                         }
@@ -90,11 +84,10 @@ angular.module('anguDragDropTable', [])
         <tr>
         <td ng-repeat="col in src.columns.data  | orderBy:'order'">
           <div class="form-group">
-            <div class="col-md-6" angu-drag ng-model="src.columns" id="{{col.id}}" draggable="true">
+            <div class="col-md-10 text-center" angu-drag ng-model="src.columns" id="{{col.id}}" draggable="true">
                 {{col.title}}
             </div>
-            <div angu-drop ng-model="src.columns" id="{{col.id}}"
-                class="col-md-6" style="background-color:lightblue;min-width:50%;min-height:50%">
+            <div class="circle col-md-2" angu-drop ng-model="src.columns" id="{{col.id}}">
             &nbsp;
             </div>
           </div>
@@ -142,7 +135,7 @@ angular.module('anguDragDropTable', [])
                                     col.order = dropColOrder;
                                     
                                 }, 100)
-                                console.log(col.title + "'s order changes to " + col.order);
+                                // console.log(col.title + "'s order changes to " + col.order);
                                 isStopDg = true;
                             }
                         }
@@ -151,7 +144,7 @@ angular.module('anguDragDropTable', [])
                                 $timeout(function () {
                                     col.order = dragColOrder;
                                 }, 100)
-                                console.log(col.title + "'s order changes to " + col.order);
+                                // console.log(col.title + "'s order changes to " + col.order);
                                 isStopDp = true;
                             }
                         }
