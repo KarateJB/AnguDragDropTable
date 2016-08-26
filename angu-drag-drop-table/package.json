@@ -1,0 +1,35 @@
+{
+  "name": "angu-drag-drop-table",
+  "version": "1.0.0",
+  "description": "A table support column and row drag-and-dop",
+  "main": "angu-drag-drop-table.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lite": "lite-server -port 7777",
+    "start": "npm run lite" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KarateJB/AnguDragDropTable.git"
+  },
+  "keywords": [
+    "angular",
+    "drag-and-drop",
+    "table"
+  ],
+  "author": "KarateJB",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KarateJB/AnguDragDropTable/issues"
+  },
+  "homepage": "https://github.com/KarateJB/AnguDragDropTable#readme",
+  "dependencies": {
+    "lite-server": "^2.2.2"
+  },
+  "devDependencies": {
+    "lite-server": "^2.2.2"
+  }
+}
