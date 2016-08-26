@@ -6,3 +6,14 @@
     -webkit-border-radius: 50px;
     border-radius: 50px;
 }
+
+.dropBlock {
+    border: darkgrey 2px dotted;
+    min-width: 60px;
+    min-height: 30px;     
+}
+
+.fit {
+    max-width:100%;
+    white-space:nowrap;
+} 

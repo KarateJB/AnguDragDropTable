@@ -1,4 +1,4 @@
-angular.module('anguDragDropTable', [])
+angular.module('anguDragDropTable', ['ngSanitize'])
     .directive('anguDrag', function ($timeout, $document) {
 
         return {
@@ -76,39 +76,42 @@ angular.module('anguDragDropTable', [])
     })
     .directive('anguDragDropTable', function ($document, $timeout) {
 
-        var template = `
-        <input type ="hidden" ng-model="columns.dragColumn" value="{{columns.dragColumn.id}}" />
-        <input type ="hidden" ng-model="columns.dropColumn" value="{{columns.dropColumn.id}}" />
-        <table ng-class="tableClass">
-        <thead>
-        <tr>
-        <td ng-repeat="col in src.columns.data  | orderBy:'order'">
-          <div class="form-group">
-            <div class="col-md-10 text-center" angu-drag ng-model="src.columns" id="{{col.id}}" draggable="true">
-                {{col.title}}
-            </div>
-            <div class="circle col-md-2" angu-drop ng-model="src.columns" id="{{col.id}}">
-            &nbsp;
-            </div>
-          </div>
-          <td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="row in src.rows">
-           <td ng-repeat="data in row.data | orderBy:'order'">
-              {{data.value}}
-           </td>
-        </tr>
-        </tbody>
-        </table>
-        `;
+        var template = 
+        '<input type ="hidden" ng-model="columns.dragColumn" value="{{columns.dragColumn.id}}" />'+
+        '<input type ="hidden" ng-model="columns.dropColumn" value="{{columns.dropColumn.id}}" />'+
+        '<table ng-class="tableClass" ng-style="tableStyle">'+
+        '<thead>'+
+        '<tr>'+
+        '<td ng-class="colCellClass" ng-repeat="col in src.columns.data  | orderBy:\'order\'">'+
+          '<table><tr><td>'+
+            '<div class="col-sm-10 text-center" angu-drag ng-model="src.columns" id="{{col.id}}" draggable="true">'+
+                '{{col.title}}'+
+            '</div></td>'+
+            '<td><div class="dropBlock col-sm-2" angu-drop ng-model="src.columns" id="{{col.id}}">'+
+            '&nbsp;'+
+            '</div></td>'+
+          '</tr></table>'+
+          '</td>'+
+        '</tr>'+
+        '</thead>'+
+        '<tbody>'+
+        '<tr ng-repeat="row in src.rows">'+
+           '<td ng-class="rowCellClass" ng-repeat="data in row.data | orderBy:\'order\'">'+
+              '<span ng-if="data.value">{{data.value}}</span>'+
+              '<span ng-if="data.html" ng-bind-html="data.html"></span>'+
+           '</td>'+
+        '</tr>'+
+        '</tbody>'+
+        '</table>';
 
         return {
             // restrict: "A",
             scope: {
                 src: '=ngModel',        //The source includes columns and rows
-                tableClass: '@'         //The Css class of table
+                tableClass: '@',        //The Css class of table
+                tableStyle: '@',        //The style of table
+                colCellClass: '@',      //The Css class of thead>tr>td
+                rowCellClass: '@'       //The Css class of tbody>tr>td
             },
             template: template,
             link: function ($scope, $element, $attr) {
