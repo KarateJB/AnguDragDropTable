@@ -17,3 +17,7 @@
     max-width:100%;
     white-space:nowrap;
 } 
+
+.virtualRow{
+   border: darkgrey 2px dotted;
+}
