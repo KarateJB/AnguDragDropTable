@@ -86,24 +86,20 @@ angular.module('anguDragDropTable', ['ngSanitize'])
 
                 $element.bind('dragstart', function (event) {
 
-                    console.log("drag tr");
-                    $scope.rows.isShowVirtualRow = true;
-                    $scope.$apply();
-                    console.log($scope.rows);
-
                     var dragRowId = event.target.id;
                     var isStop = false;
+                    var index = 0;
                     angular.forEach($scope.rows.data, function (row) {
                         if (!isStop) {
-                            if (dragRowId === row.id) {
-                                $scope.rows = JSON.parse(JSON.stringify(row));
+                            if (dragRowId === ("row_" + index.toString())) {
+                                $scope.rows.dragRow =row;
                                 $scope.$apply();
                                 isStop = true;
 
-                                console.log($scope.dragRow);
-
                             }
                         }
+
+                        index++;
                     })
                 })
 
@@ -131,16 +127,17 @@ angular.module('anguDragDropTable', ['ngSanitize'])
                     var dropRowId = event.target.id;
 
                     var isStop = false;
+                    var index = 0;
                     angular.forEach($scope.rows.data, function (row) {
                         if (!isStop) {
-                            if (dropRowId === row.id) {
-                                $scope.dropRow = JSON.parse(JSON.stringify(row));
+                            if (dropRowId === ("row_" + index.toString())) {
+                                $scope.rows.dropRow = row;
                                 $scope.$apply();
                                 isStop = true;
-
-                                console.log($scope.dropRow);
                             }
                         }
+
+                        index++;
                     })
 
                     // event.stopPropagation();
@@ -166,7 +163,8 @@ angular.module('anguDragDropTable', ['ngSanitize'])
             '<table ng-class="tableClass" ng-style="tableStyle">' +
             '<thead>' +
             '<tr>' +
-            '<td ng-class="colCellClass" ng-repeat="col in src.columns.data  | orderBy:\'order\'">' +
+            '<td class="col-sm-1"></td>' +
+            '<td ng-class="colCellClass" ng-repeat="col in src.columns.data | orderBy:\'order\'">' +
             '<table><tr><td>' +
             '<div class="col-sm-10 text-center" angu-drag-col ng-model="src.columns" id="{{col.id}}" draggable="true">' +
             '{{col.title}}' +
@@ -178,9 +176,20 @@ angular.module('anguDragDropTable', ['ngSanitize'])
             '</td>' +
             '</tr>' +
             '</thead>' +
-            '<tbody ng-repeat="rowdata in src.rows.data" >' +
-            '<tr ng-show="src.rows.isShowVirtualRow" class="virtualRow" ><td colspan="{{row.data.length}}"></td></tr>' +
-            '<tr draggable="true" id="row_{{$index}}" angu-drag-row ng-model="src.rows">' +
+            '<tbody ng-repeat="rowdata in src.rows.data">' +
+            // '<tr ng-show="src.rows.isShowVirtualRow" class="virtualRow" ><td colspan="{{row.data.length}}"></td></tr>' +
+            // '<tr draggable="true" id="row_{{$index}}" angu-drag-row ng-model="src.rows">' +
+            '<tr>' +
+            '<td>' +
+            '<table><tr>' +
+            '<td><div style="width:30px;height:30px" class="circle" draggable="true"  angu-drag-row ng-model="src.rows">' +
+            '<img style="width:100%;height:100%" src="../../example/image/recycling.png" id="row_{{$index}}"></img>' +
+            '</div></td>' +
+            '<td><div style="width:30px;height:30px" class="circle" angu-drop-row ng-model="src.rows">' +
+            '<img style="width:100%;height:100%" src="../../example/image/drop.jpg" id="row_{{$index}}" ></img>' +
+            '</div></td>' +
+            '</tr></table>' +
+            '</td>' +
             '<td ng-class="rowCellClass" ng-repeat="data in rowdata.cells | orderBy:\'order\'">' +
             '<span ng-if="data.value">{{data.value}}</span>' +
             '<span ng-if="data.html" ng-bind-html="data.html"></span>' +
@@ -264,12 +273,29 @@ angular.module('anguDragDropTable', ['ngSanitize'])
 
                 })
 
-                // $scope.initColumns = function () {
-                //     angular.forEach($scope.columns, function (col) {
-                //         var queryRslt = $document[0].getElementById(id)
-                //         var elem = angular.element(queryRslt);
-                //     })
-                // }
+
+                $scope.$watch('src.rows.dropRow', function (newValue, oldValue) {
+
+                    console.log(newValue);
+
+                    if (!newValue || newValue == null || newValue == {})
+                        return;
+                    else {
+                        var dragRow = $scope.src.rows.dragRow;
+                        var dropRow = $scope.src.rows.dropRow;
+
+                        //Deep clone the dragRow
+                        var cloneDragRow = JSON.parse(JSON.stringify(dragRow));
+
+                        //Remove dragRow
+                        var removeIdx = $scope.src.rows.data.indexOf(dragRow);
+                        $scope.src.rows.data.splice(removeIdx, 1);
+
+                        //Splice for inserting on dropRow index
+                        var dropIdx = $scope.src.rows.data.findIndex(x => x === dropRow);
+                        $scope.src.rows.data.splice(dropIdx+1, 0, cloneDragRow);
+                    }
+                })
 
             },
             controller: function ($scope, $element) {
