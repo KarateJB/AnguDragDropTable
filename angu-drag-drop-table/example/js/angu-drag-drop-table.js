@@ -91,7 +91,7 @@ angular.module('anguDragDropTable', ['ngSanitize'])
                     var index = 0;
                     angular.forEach($scope.rows.data, function (row) {
                         if (!isStop) {
-                            if (dragRowId === ("row_" + index.toString())) {
+                            if (dragRowId === ("angu_drag-drop_row_" + index.toString())) {
                                 $scope.rows.dragRow =row;
                                 $scope.$apply();
                                 isStop = true;
@@ -130,7 +130,7 @@ angular.module('anguDragDropTable', ['ngSanitize'])
                     var index = 0;
                     angular.forEach($scope.rows.data, function (row) {
                         if (!isStop) {
-                            if (dropRowId === ("row_" + index.toString())) {
+                            if (dropRowId === ("angu_drag-drop_row_" + index.toString())) {
                                 $scope.rows.dropRow = row;
                                 $scope.$apply();
                                 isStop = true;
@@ -169,8 +169,8 @@ angular.module('anguDragDropTable', ['ngSanitize'])
             '<div class="col-sm-10 text-center" angu-drag-col ng-model="src.columns" id="{{col.id}}" draggable="true">' +
             '{{col.title}}' +
             '</div></td>' +
-            '<td><div class="dropBlock col-sm-2" angu-drop-col ng-model="src.columns" id="{{col.id}}">' +
-            '&nbsp;' +
+            '<td><div style="width:30px;height:30px" angu-drop-col ng-model="src.columns" >' +
+            '<img style="width:100%;height:100%" src="../../example/image/drop.jpg" id="{{col.id}}" ></img>' +
             '</div></td>' +
             '</tr></table>' +
             '</td>' +
@@ -183,10 +183,10 @@ angular.module('anguDragDropTable', ['ngSanitize'])
             '<td>' +
             '<table><tr>' +
             '<td><div style="width:30px;height:30px" class="circle" draggable="true"  angu-drag-row ng-model="src.rows">' +
-            '<img style="width:100%;height:100%" src="../../example/image/recycling.png" id="row_{{$index}}"></img>' +
+            '<img style="width:100%;height:100%" src="../../example/image/recycling.png" id="angu_drag-drop_row_{{$index}}"></img>' +
             '</div></td>' +
             '<td><div style="width:30px;height:30px" class="circle" angu-drop-row ng-model="src.rows">' +
-            '<img style="width:100%;height:100%" src="../../example/image/drop.jpg" id="row_{{$index}}" ></img>' +
+            '<img style="width:100%;height:100%" src="../../example/image/drop.jpg" id="angu_drag-drop_row_{{$index}}" ></img>' +
             '</div></td>' +
             '</tr></table>' +
             '</td>' +

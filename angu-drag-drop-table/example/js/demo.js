@@ -11,7 +11,6 @@ angular.module('app', ['anguDragDropTable'])
             {'id':'colName','order':2,'title':'Name'},
             {'id':'colAge', 'order':3,'title':'Age'}]};
 
-            console.log($scope.src.columns.data.length);
         $scope.src.rows={
             'dragRow':null, 'dropRow':null,
             'data':[{'cells':[{'column':'colSn','value':1},{'column':'colName','value':'JB'},{'column':'colAge','value':35}]},
