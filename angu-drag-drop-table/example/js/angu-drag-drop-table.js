@@ -169,24 +169,22 @@ angular.module('anguDragDropTable', ['ngSanitize'])
             '<div class="col-sm-10 text-center" angu-drag-col ng-model="src.columns" id="{{col.id}}" draggable="true">' +
             '{{col.title}}' +
             '</div></td>' +
-            '<td><div style="width:30px;height:30px" angu-drop-col ng-model="src.columns" >' +
-            '<img style="width:100%;height:100%" src="../../example/image/drop.jpg" id="{{col.id}}" ></img>' +
+            '<td><div ng-class="dragDropClass" angu-drop-col ng-model="src.columns" >' +
+            '<img style="width:100%;height:100%" ng-src="{{dropImgSrc}}" id="{{col.id}}" ></img>' +
             '</div></td>' +
             '</tr></table>' +
             '</td>' +
             '</tr>' +
             '</thead>' +
             '<tbody ng-repeat="rowdata in src.rows.data">' +
-            // '<tr ng-show="src.rows.isShowVirtualRow" class="virtualRow" ><td colspan="{{row.data.length}}"></td></tr>' +
-            // '<tr draggable="true" id="row_{{$index}}" angu-drag-row ng-model="src.rows">' +
             '<tr>' +
             '<td>' +
             '<table><tr>' +
-            '<td><div style="width:30px;height:30px" class="circle" draggable="true"  angu-drag-row ng-model="src.rows">' +
-            '<img style="width:100%;height:100%" src="../../example/image/recycling.png" id="angu_drag-drop_row_{{$index}}"></img>' +
+            '<td><div ng-class="dragDropClass" draggable="true"  angu-drag-row ng-model="src.rows">' +
+            '<img style="width:100%;height:100%" ng-src="{{dragImgSrc}}" id="angu_drag-drop_row_{{$index}}"></img>' +
             '</div></td>' +
-            '<td><div style="width:30px;height:30px" class="circle" angu-drop-row ng-model="src.rows">' +
-            '<img style="width:100%;height:100%" src="../../example/image/drop.jpg" id="angu_drag-drop_row_{{$index}}" ></img>' +
+            '<td><div ng-class="dragDropClass" angu-drop-row ng-model="src.rows">' +
+            '<img style="width:100%;height:100%" ng-src="{{dropImgSrc}}" id="angu_drag-drop_row_{{$index}}"></img>' +
             '</div></td>' +
             '</tr></table>' +
             '</td>' +
@@ -205,10 +203,18 @@ angular.module('anguDragDropTable', ['ngSanitize'])
                 tableClass: '@',        //The Css class of table
                 tableStyle: '@',        //The style of table
                 colCellClass: '@',      //The Css class of thead>tr>td
-                rowCellClass: '@'       //The Css class of tbody>tr>td
+                rowCellClass: '@',      //The Css class of tbody>tr>td
+                dragDropClass: '@',     //The Css class of draggable and droppable div
+                dragImgSrc: '@',        //The image source for draggable div
+                dropImgSrc: '@'         //The image source for droppable div    
             },
             template: template,
             link: function ($scope, $element, $attr) {
+
+                //Css initialize
+                if(!$scope.dragDropClass){ //Use default css
+                    $scope.dragDropClass = {'dragDropBlock': true};
+                }
 
                 $scope.src.rows.isShowVirtualRow = false;
 
@@ -231,7 +237,7 @@ angular.module('anguDragDropTable', ['ngSanitize'])
                                     col.order = dropColOrder;
 
                                 }, 100)
-                                // console.log(col.title + "'s order changes to " + col.order);
+
                                 isStopDg = true;
                             }
                         }
@@ -240,7 +246,6 @@ angular.module('anguDragDropTable', ['ngSanitize'])
                                 $timeout(function () {
                                     col.order = dragColOrder;
                                 }, 100)
-                                // console.log(col.title + "'s order changes to " + col.order);
                                 isStopDp = true;
                             }
                         }
@@ -276,7 +281,6 @@ angular.module('anguDragDropTable', ['ngSanitize'])
 
                 $scope.$watch('src.rows.dropRow', function (newValue, oldValue) {
 
-                    console.log(newValue);
 
                     if (!newValue || newValue == null || newValue == {})
                         return;

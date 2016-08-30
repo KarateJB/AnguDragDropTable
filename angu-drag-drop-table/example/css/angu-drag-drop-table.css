@@ -7,10 +7,10 @@
     border-radius: 50px;
 }
 
-.dropBlock {
-    border: darkgrey 2px dotted;
-    min-width: 60px;
-    min-height: 30px;     
+.dragDropBlock {
+    border: darkgrey 1px dotted;
+    width: 30px;
+    height: 30px;     
 }
 
 .fit {

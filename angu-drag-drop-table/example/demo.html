@@ -13,9 +13,11 @@
 </head>
 <body>
     <div ng-app="app" ng-controller="DemoCtrl">
-        <h3>Demo</h3> <br />
+        <h3>Demo</h3> <br /> 
         <angu-drag-drop-table ng-model="src" 
-                              table-class="table table-bordered">
+                              table-class="table table-bordered"
+                              drag-img-src="{{dragImgSrc}}"
+                              drop-img-src="{{dropImgSrc}}">
         </angu-drag-drop-table>
     </div>
 </body>
