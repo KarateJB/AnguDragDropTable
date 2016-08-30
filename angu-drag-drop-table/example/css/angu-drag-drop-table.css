@@ -10,7 +10,9 @@
 .dragDropBlock {
     border: darkgrey 1px dotted;
     width: 30px;
-    height: 30px;     
+    max-width: 30px;
+    height: 30px;   
+    max-height: 30px;  
 }
 
 .fit {

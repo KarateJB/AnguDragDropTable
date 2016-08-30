@@ -216,8 +216,6 @@ angular.module('anguDragDropTable', ['ngSanitize'])
                     $scope.dragDropClass = {'dragDropBlock': true};
                 }
 
-                $scope.src.rows.isShowVirtualRow = false;
-
                 $scope.$watch('src.columns.dropColumn.id', function (newValue, oldValue) {
 
                     if (!newValue || newValue == null)

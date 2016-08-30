@@ -2,8 +2,8 @@ angular.module('app', ['anguDragDropTable'])
     .controller('DemoCtrl', function ($scope, $q, $timeout) {
 
         $scope.tableClass = "table-bordered";
-        $scope.dragImgSrc = "image/recycling.png";
-        $scope.dropImgSrc = "image/drop.jpg";
+        $scope.dragImgSrc = "image/drag.gif";
+        $scope.dropImgSrc = "image/drop.gif";
 
         $scope.src = { 'columns': {}, 'rows': [] };
 
